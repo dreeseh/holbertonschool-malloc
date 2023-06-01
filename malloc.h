@@ -51,4 +51,6 @@ void free_list_add(block_t *blk);
 block_t *free_block_split(block_t *free_blk, size_t size);
 void free_blocks(void);
 
+void _free(void *ptr);
+
 #endif /* _MALLOC_H */
