@@ -9,9 +9,15 @@
 #include <stdint.h>
 
 /* macros */
-#define BLOCK_SIZE 4096
 #define ALIGN (2 * sizeof(void *))
 
+#define HEADER_SZ (sizeof(size_t) * 2)
+#define BLK_SZ(size) (HEADER_SZ + size)
+#define PAYLOAD_SZ(size) (size - HEADER_SZ)
+#define BLK_PAYLOAD(ptr) ((void *)((uint8_t *)ptr + HEADER_SZ))
+#define BLK_HEADER(ptr) ((block_t *)((uint8_t *)ptr - HEADER_SZ))
+
+/* structures */
 /**
  * struct block_s - heap allocation block header
  *
@@ -35,5 +41,14 @@ typedef struct block_s
 
 /* prototypes */
 void *naive_malloc(size_t size);
+
+void print_free_list(char *prefix);
+block_t *new_free_block(size_t algnd_pyld_sz);
+void *_malloc(size_t size);
+
+void free_list_remove(block_t *blk);
+void free_list_add(block_t *blk);
+block_t *free_block_split(block_t *free_blk, size_t size);
+void free_blocks(void);
 
 #endif /* _MALLOC_H */
